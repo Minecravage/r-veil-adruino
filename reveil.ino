@@ -56,6 +56,7 @@ void loop() {
 
   if (digitalRead(2) == 1) {
 
+    // Déclaration des variables globales
     short int heure_r = 0;
     short int minute_r = 0;
     short int seconde_r = 0;
@@ -63,19 +64,26 @@ void loop() {
     lcd.clear() ;
 
     while (true) {
+      // Si on appuie sur le +
       if (digitalRead(4) == 1) {
+
+        // Si on règle les secondes
         if (state == 1) {
           seconde_r =+ 1;
           if (seconde_r >= 60) {
             seconde_r = 0;
           }
         }
+
+        // Si on règle les minutes
         if (state == 2) {
           minute_r =+ 1;
           if (minute_r >= 60) {
             minute_r = 0;
           }
         }
+
+        // Si on règle les heures
         if (state == 3) {
           heure_r =+ 1;
           if (heure_r >= 24) {
@@ -83,13 +91,47 @@ void loop() {
           }
         }
       }
-      if (digitalRead(5) == 1) {
-        
-      }
-      if (digitalRead(2) == 1) {
-        
-    }
 
+      // Si on appuie sur le -
+      if (digitalRead(5) == 1) {
+
+        // Si on règle les secondes
+        if (state == 1) {
+          seconde_r =- 1;
+          if (seconde_r < 60) {
+            seconde_r = 59;
+          }
+        }
+
+        // Si on règle les minutes
+        if (state == 2) {
+          minute_r =- 1;
+          if (minute_r < 0) {
+            minute_r = 59;
+          }
+        }
+
+        // Si on règle les heures
+        if (state == 3) {
+          heure_r =- 1;
+          if (heure_r == 0) {
+            heure_r = 23;
+          }
+        }
+      }
+
+      // Si on appuie sur le changement de state
+      if (digitalRead(2) == 1) {
+        if (state > 4) {
+          DateTime now = rtc.now();
+          rtc.adjust(DateTime(now.year(), now.month(), now.day(), heure_r, minute_r, seconde_r));
+          short int state = 0;
+          break;
+        }
+        else {
+          state =+ 1;
+        }
+      }
     }
 
   }
