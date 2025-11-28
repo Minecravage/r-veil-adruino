@@ -18,7 +18,7 @@ void setup() {
 
   // Setup de la clock
   if (! rtc.begin()) {
-    Serial.println("RTC n'est pas branché");
+    Serial.println("RTC n'est pas branchée");
   }
 
   if (! rtc.isrunning()) {
